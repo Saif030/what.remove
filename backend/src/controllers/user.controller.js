@@ -2,4 +2,8 @@ const userData = (req, res) => {
     res.json({message: "user data"});
 }
 
-export default userData;
+const clerkWebhook = (req, res) => {
+    res.json({message: "clerk webhook"});
+}
+
+export { clerkWebhook , userData };
