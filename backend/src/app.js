@@ -16,6 +16,10 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 //routes declaration
+app.get("/", (req, res) => {
+    res.json({message: "Api is working!"});
+});
+
 app.use("/api/v1/users", userRouter)
 
 // http://localhost:8000/api/v1/users/register

@@ -4,11 +4,6 @@ import connectDB from "./dbConnect/dbConnect.js";
 dotenv.config();
 
 
-
-app.get("/", (req, res) => {
-    res.send("Hello World!gsgs");
-});
-
 connectDB()
 .then(() => {
     app.listen(process.env.PORT, () => {
