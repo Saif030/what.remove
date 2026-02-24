@@ -26,13 +26,15 @@ const clerkWebhook = async (req, res) => {
                 email: email_addresses[0].email_address,
                 firstName: first_name,
                 lastName: last_name,
-                imageUrl: image_url
+                photo: image_url
             })
 
-            if(!newUser){
-                return res.status(500).json({
-                    success: false,
-                    message: "Failed to create user in database!"
+            console.log("User created successfully in database!");
+
+            if(newUser){
+                return res.status(200).json({
+                    success : true,
+                    message : "User created successfully in database!"
                 })
             }
 
@@ -49,13 +51,15 @@ const clerkWebhook = async (req, res) => {
                 email: email_addresses[0].email_address,
                 firstName: first_name,
                 lastName: last_name,
-                imageUrl: image_url
+                photo: image_url
             })
 
-            if(!userUpdate){
-                return res.status(500).json({
-                    success : false,
-                    message : "Failed to update user in database!"
+            console.log("User updated successfully in database!");
+
+            if(userUpdate){
+                return res.status(200).json({
+                    success : true,
+                    message : "User updated successfully in database!"
                 })
             }
         }
