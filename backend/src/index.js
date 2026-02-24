@@ -3,6 +3,9 @@ import { app } from "./app.js";
 import connectDB from "./dbConnect/dbConnect.js";
 dotenv.config();
 
+app.get("/", (req, res) => {
+    res.json({message: "Api is working!"});
+});
 
 connectDB()
 .then(() => {
