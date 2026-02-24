@@ -1,5 +1,5 @@
 import {Webhook} from 'svix';
-import User from '../models/user.model.js';
+import { User } from '../models/user.model.js';
 
 const userData = (req, res) => {
     res.json({message: "user data"});
