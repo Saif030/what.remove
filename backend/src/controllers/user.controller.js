@@ -14,12 +14,18 @@ const clerkWebhook = async (req, res) => {
             "svix-timestamp":req.headers["svix-timestamp"],
             "svix-signature":req.headers["svix-signature"]
         });
-        console.log( "Webhook received successfully!");
+        console.log("Webhook received successfully!");
+        console.log("Event type:", event.type);
+        console.log("Event data:", JSON.stringify(event.data));
 
         const { data , type } = event;
 
         if(type === "user.created"){
             const { id , email_addresses , image_url , first_name , last_name } = data;
+
+            if (!email_addresses || email_addresses.length === 0) {
+                return res.status(400).json({message: "No email address provided!"});
+            }
 
             const newUser = await User.create({
                 clerkId: id,
@@ -29,7 +35,7 @@ const clerkWebhook = async (req, res) => {
                 photo: image_url
             })
 
-            console.log("User created successfully in database!");
+            console.log("User created successfully in database:", newUser);
 
             if(newUser){
                 return res.status(200).json({
@@ -83,8 +89,8 @@ const clerkWebhook = async (req, res) => {
         });
 
     }catch(err){
-        console.log(`Error: ${err.message}`);
-        return res.status(400).json({message: "Invalid webhook signature!"});
+        console.error(`Error message: ${err.message}`);
+        return res.status(400).json({message: err.message || "Webhook verification failed!"});
     }
 
 }
