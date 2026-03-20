@@ -15,7 +15,7 @@ const DataProvider = ({children}) => {
     const fetchData = async () => {
         try{
             const token = await getToken();
-            const response = await axios.get(import.meta.env.VITE_BACKEND_URL+"/api/v1/users/credits", {
+            const response = await axios.get(import.meta.env.VITE_BACKEND_URL+"api/v1/users/credits", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
