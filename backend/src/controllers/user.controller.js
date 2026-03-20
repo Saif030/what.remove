@@ -1,8 +1,9 @@
 import {Webhook} from 'svix';
 import { User } from '../models/user.model.js';
+import ApiResponse from '../utils/ApiResponse.js';
 
 const userData = (req, res) => {
-    res.json({message: "user data"});
+    res.json(new ApiResponse(200, "user data", null));
 }
 
 const clerkWebhook = async (req, res) => {
@@ -14,9 +15,6 @@ const clerkWebhook = async (req, res) => {
             "svix-timestamp":req.headers["svix-timestamp"],
             "svix-signature":req.headers["svix-signature"]
         });
-        console.log("Webhook received successfully!");
-        console.log("Event type:", event.type);
-        console.log("Event data:", JSON.stringify(event.data));
 
         const { data , type } = event;
 
@@ -95,4 +93,29 @@ const clerkWebhook = async (req, res) => {
 
 }
 
-export { clerkWebhook , userData };
+const userCredits = async (req,res) => {
+    const userId = req.auth.userId;
+
+    try{
+        const user = await User.findOne({clerkId : userId});
+
+        if(!user){
+            return res.status(404).json({
+                success : false,
+                message : "User not found!"
+            })
+        }
+        return res.status(200).json({
+            success : true,
+            credits : user.credits
+        })
+    }catch(err){
+        console.error(`Error fetching user credits: ${err.message}`);
+        return res.status(500).json({
+            success : false,
+            message : "Failed to fetch user credits!"
+        })
+    }
+}
+
+export { clerkWebhook , userData , userCredits };
