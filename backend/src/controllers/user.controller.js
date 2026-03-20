@@ -3,7 +3,7 @@ import { User } from '../models/user.model.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
 const userData = (req, res) => {
-    res.json(new ApiResponse(200, "user data", null));
+    return res.json(new ApiResponse(200, "user data", null));
 }
 
 const clerkWebhook = async (req, res) => {
@@ -95,6 +95,13 @@ const clerkWebhook = async (req, res) => {
 
 const userCredits = async (req,res) => {
     const userId = req.auth.userId;
+
+    if(!userId){
+        return res.status(401).json({
+            success : false,
+            message : "Unauthorized!"
+        })
+    }
 
     try{
         const user = await User.findOne({clerkId : userId});
