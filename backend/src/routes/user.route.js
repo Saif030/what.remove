@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import { requireAuth } from "@clerk/express";
 import express from "express";
 
 const router = Router();
@@ -11,6 +11,6 @@ router.route("/webhooks").post(express.raw({ type: "application/json" }), clerkW
 router.route("/webhooks").get((req, res) => {
   res.json({ message: "This endpoint is for Clerk webhooks. Please send a POST request." });
 });
-router.route("/credits").get(ClerkExpressRequireAuth(),userCredits);
+router.route("/credits").get(requireAuth(),userCredits);
 
 export default router;
