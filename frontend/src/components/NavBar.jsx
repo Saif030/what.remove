@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom"
 import { useClerk , useUser } from "@clerk/clerk-react"
 import { UserButton } from "@clerk/clerk-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useContext } from "react"
+import { DataContext } from "../context/DataContext"
 
 const NavBar = () => {
       const { openSignIn } = useClerk();
       const { isSignedIn, user , isLoaded } = useUser();
-      const [credits, setCredits] = useState(0);
+      const { credits , fetchData } = useContext(DataContext)
+
+      useEffect(() => {
+          fetchData();
+      }, [isSignedIn]);
 
     return (
         <div className="w-full px-4 sm:px-0 sm:h-20 h-16 flex justify-between items-center">
