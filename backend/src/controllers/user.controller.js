@@ -1,5 +1,5 @@
 import {Webhook} from 'svix';
-import { User } from '../models/user.model.js';
+import User  from '../models/user.model.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
 const userData = (req, res) => {
@@ -32,8 +32,6 @@ const clerkWebhook = async (req, res) => {
                 lastName: last_name,
                 photo: image_url
             })
-
-            console.log("User created successfully in database:", newUser);
 
             if(newUser){
                 return res.status(200).json({
@@ -94,7 +92,7 @@ const clerkWebhook = async (req, res) => {
 }
 
 const userCredits = async (req,res) => {
-    const { userId } = req.auth;
+    const { userId } = req.auth();
 
     if(!userId){
         return res.status(401).json({

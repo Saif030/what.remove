@@ -1,22 +1,53 @@
 import { createContext, use } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth, useClerk, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
 export const DataContext = createContext()
+export const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
 
 const DataProvider = ({children}) => {
     const [data ,setData] = useState(null);
     const [image, setImage] = useState(null);
     const [resultImage, setResultImage] = useState(false);
+    const [clientSecret, setClientSecret] = useState(null);
 
     const { getToken } = useAuth();
     const { isSignedIn } = useUser();
     const { openSignIn } = useClerk();
     const navigate = useNavigate();
+
+    const handleCheckout  = async (planId) => {
+        const stripe = await stripePromise;
+
+        try{
+            if(!isSignedIn){
+                openSignIn();
+                return;
+            }
+
+            const token = await getToken();
+            const response = await axios.post("http://localhost:3000/api/v1/payment/payment-intent", {
+                priceId: planId
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const { clientSecret } = response.data;
+            setClientSecret(clientSecret);
+            console.log("Checkout session result:", clientSecret);
+            navigate("/checkout");
+
+        }catch(error){
+            console.log("Error during checkout:", error);
+            toast.error("An error occurred during checkout. Please try again.");
+        }
+    }
 
     const removeBg = async (image) => {
 
@@ -40,9 +71,13 @@ const DataProvider = ({children}) => {
             });
 
             const result = response.data;
-            setResultImage(result);
-            console.log("Image uploaded successfully:", result);
-            toast.success("Background removed successfully!");
+            if(result.success){
+                setResultImage(result);
+                toast.success("Background removed successfully!");
+            } else {
+                navigate("/plans");
+                toast.error(result.message);
+            }
 
         }catch(error){
             console.log(error)
@@ -68,7 +103,7 @@ const DataProvider = ({children}) => {
     }
 
     return (
-        <DataContext.Provider value={{ data, fetchData , removeBg, image, resultImage ,resultImage}}>
+        <DataContext.Provider value={{ data, fetchData , removeBg, image, resultImage ,resultImage , handleCheckout ,clientSecret}}>
             {children}
         </DataContext.Provider>
     )

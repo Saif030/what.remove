@@ -1,10 +1,10 @@
 import fs from "fs";
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 import { removeBackgroundFromImageFile } from "remove.bg";
 
 const removeBgImage = async (req , res) => {
     try{
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         console.log("User ID from auth:", userId);
 
         if (!req.file) {
@@ -18,7 +18,10 @@ const removeBgImage = async (req , res) => {
         }
 
         if(user.credits === 0){
-            return res.status(403).json({ success : false, message: "Insufficient credits" });
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error(err);
+            });
+            return res.status(200).json({ success : false, message: "Insufficient credits" });
         }
 
         if(!process.env.REMOVE_BG_API_KEY){

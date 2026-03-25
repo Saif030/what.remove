@@ -3,6 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import userRouter from "../routes/user.route.js"
 import imageRouter from "../routes/image.route.js"
+import paymentRouter from "../routes/payment.route.js"
 import { clerkMiddleware, getAuth, requireAuth } from '@clerk/express'
 
 const app = express()
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/image", imageRouter)
+app.use("/api/v1/payment", paymentRouter)
 
 // http://localhost:8000/api/v1/users/register
 

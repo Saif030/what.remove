@@ -1,22 +1,29 @@
+import { useContext } from "react";
+import { DataContext } from "../context/DataContext";
+
 const Plans = () => {
+    const { handleCheckout } = useContext(DataContext)
     const plans = [
         {
             name: "Basic",
-            price: "$9.99",
+            planId : "plan_29",
+            price: "₹100",
             description: "Perfect for small businesses",
-            credits: "100 credits",
-        },
-        {
-            name: "Pro",
-            price: "$19.99",
-            description: "Great for growing businesses",
             credits: "500 credits",
         },
         {
-            name: "Enterprise",
-            price: "$29.99",
-            description: "Best for large businesses",
+            name: "Pro",
+            planId : "plan_03",
+            price: "₹500",
+            description: "Great for growing businesses",
             credits: "1000 credits",
+        },
+        {
+            name: "Enterprise",
+            planId : "plan_06",
+            price: "₹1000",
+            description: "Best for large businesses",
+            credits: "2500 credits",
         },
     ];
 
@@ -31,7 +38,7 @@ const Plans = () => {
                         <h2 className="text-xl font-medium">{plan.name}</h2>
                         <p className="text-gray-500">{plan.description}</p>
                         <p className="text-3xl font-medium mt-6">{plan.price} <span className="text-gray-500 text-lg font-normal">/ {plan.credits}</span></p>
-                        <button className="mt-10 w-full bg-black text-white px-6 py-2 rounded-lg cursor-pointer">Get Started</button>
+                        <button onClick={() => handleCheckout(plan.planId)} className="mt-10 w-full bg-black text-white px-6 py-2 rounded-lg cursor-pointer">Get Started</button>
                     </div>
                 ))}
             </div>

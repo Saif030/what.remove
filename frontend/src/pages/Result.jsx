@@ -13,7 +13,7 @@ const Result = () => {
     const downloadImage = (base64) => {
         const link = document.createElement("a");
         link.href = `data:image/png;base64,${base64}`;
-        link.download = "removed-bg.png";
+        link.download = `removed-bg-${Date.now()}.png`;
         link.click();
     };
 
