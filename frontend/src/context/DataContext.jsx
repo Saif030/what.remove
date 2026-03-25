@@ -93,7 +93,7 @@ const DataProvider = ({children}) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const result = await response.data;
+            const result = response.data ? response.data : 10;
             console.log("Fetched credits:", result.credits);
             setData(result.credits);
         } catch (error) {
