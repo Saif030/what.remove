@@ -46,7 +46,7 @@ const paymentWebhook = async (req, res) => {
       }
     }
 
-    res.json({ received: true });
+    return res.json({ transaction , success: true , transaction: event.type === "payment_intent.succeeded" ? transaction : null });
   }
 
 export default paymentWebhook;
