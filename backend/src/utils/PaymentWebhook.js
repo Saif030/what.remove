@@ -33,6 +33,12 @@ const paymentWebhook = async (req, res) => {
 
       const user = await User.findOne({ clerkId: userId });
 
+      let ispaymentCompleted = false;
+
+      if(paymentIntent.status === "succeeded"){
+        ispaymentCompleted = true;
+      }
+
       if (user) {
         user.credits += Number(credits);
         await user.save();
@@ -40,14 +46,14 @@ const paymentWebhook = async (req, res) => {
        const transaction = await Transaction.create({
           clerkId: userId,
           plan,
+          isPaymentCompleted,
           amount: paymentIntent.amount / 100,
           credits,
         });
       }
     }
-    console.log(transaction);
 
-    return res.json({ transaction , success: true , transaction: event.type === "payment_intent.succeeded" ? transaction : null });
+    return res.json({ success: true });
   }
 
 export default paymentWebhook;
