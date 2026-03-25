@@ -1,15 +1,19 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { DataContext } from "../context/DataContext";
 
 const Result = () => {
     const [originalImage, setOriginalImage] = useState(null);
     const [resultImage, setResultImage] = useState(null);
+
+    const { image } = useContext(DataContext);
     return (
         <div className="sm:w-7xl bg-gray-100 w-full mx-auto min-h-[79vh] flex flex-col items-center justify-center">
             <div className="bg-white w-80 rounded-lg p-8 flex flex-col items-center w-full">
                 <div className="flex flex-col sm:flex-row gap-2">
                     <div className="sm:w-1/2 w-full h-[60vh] flex flex-col justify-center p-6 gap-4">
                     <h1 className="text-lg text-gray-600 font-semibold">Orignal</h1>
-                    <img className="w-full h-full object-contain rounded-xl" src="/image_w_bg.png" alt="" />
+                    {image ? <img className="w-full h-full object-contain rounded-xl" src={URL.createObjectURL(image)} alt="" /> : <img className="w-full h-full object-contain rounded-xl" src="/image_w_bg.png" alt="" />}
                     </div>
                     <div className="sm:w-1/2 w-full h-[60vh] flex flex-col justify-center p-6 gap-4">
                     <h1 className="text-lg text-gray-600 font-semibold">Background Removed</h1>

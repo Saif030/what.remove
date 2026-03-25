@@ -6,6 +6,7 @@ const router = Router();
 
 import { userData, clerkWebhook , userCredits } from "../controllers/user.controller.js";
 
+
 router.route("/").get(userData);
 router.route("/webhooks").post(express.raw({ type: "application/json" }), clerkWebhook);
 router.route("/webhooks").get((req, res) => {

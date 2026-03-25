@@ -1,16 +1,54 @@
 import { createContext, use } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useClerk, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export const DataContext = createContext()
 
 const DataProvider = ({children}) => {
     const [data ,setData] = useState(null);
+    const [image, setImage] = useState(null);
+    const [resultImage, setResultImage] = useState(false);
 
     const { getToken } = useAuth();
+    const { isSignedIn } = useUser();
+    const { openSignIn } = useClerk();
+    const navigate = useNavigate();
+
+    const removeBg = async (image) => {
+
+        try{
+            if(!isSignedIn){
+                openSignIn();
+                return;
+            }
+            setImage(image);
+            setResultImage(false);
+            navigate("/result");
+
+            const token = await getToken();
+            const formData = new FormData();
+            formData.append("image", image);
+
+            const response = await axios.post(import.meta.env.VITE_BACKEND_URL+"/api/v1/remove-bg", formData, {
+                 headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const result = response.data;
+            setResultImage(result);
+            console.log("Image uploaded successfully:", result);
+            toast.success("image uploaded successfully!");
+
+        }catch(error){
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
 
     const fetchData = async () => {
         try{
@@ -20,9 +58,9 @@ const DataProvider = ({children}) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const result = await response.data;
-            console.log("Fetched data:", result);
-            setData(result);
+            const result = response.data;
+            console.log("Fetched credits:", result.credits);
+            setData(result.credits);
         } catch (error) {
             console.error("Error fetching data:", error);
             toast.error("Failed to fetch data. Please try again later.");
@@ -30,7 +68,7 @@ const DataProvider = ({children}) => {
     }
 
     return (
-        <DataContext.Provider value={{ data, fetchData }}>
+        <DataContext.Provider value={{ data, fetchData , removeBg, image, resultImage }}>
             {children}
         </DataContext.Provider>
     )

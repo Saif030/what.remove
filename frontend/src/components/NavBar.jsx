@@ -8,10 +8,12 @@ import { DataContext } from "../context/DataContext"
 const NavBar = () => {
       const { openSignIn } = useClerk();
       const { isSignedIn, user , isLoaded } = useUser();
-      const { credits , fetchData } = useContext(DataContext)
+      const { data , fetchData } = useContext(DataContext)
 
       useEffect(() => {
-          fetchData();
+          if(isSignedIn){
+              fetchData();
+          }
       }, [isSignedIn]);
 
     return (
@@ -25,7 +27,7 @@ const NavBar = () => {
                     <img src="/credit_icon.png" alt="credit" className="w-5 h-5" />
                     <div className="flex gap-2 items-center">
                         <p className="text-sm font-normal hidden sm:block">Credits lefts :</p>
-                        <p className="text-sm font-semibold">{credits}</p>
+                        <p className="text-sm">{data ?? 0}</p>
                     </div>
                 </Link>
                 {
