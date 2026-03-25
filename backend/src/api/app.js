@@ -13,7 +13,6 @@ const app = express()
 const allowedOrigins = ["http://localhost:5173", "https://what-remove-3wds-liard.vercel.app"];
 app.use(cors({
   origin: allowedOrigins,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 }));
 
