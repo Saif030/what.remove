@@ -46,7 +46,7 @@ const paymentWebhook = async (req, res) => {
        const transaction = await Transaction.create({
           clerkId: userId,
           plan,
-          isPaymentCompleted,
+          isPaymentCompleted : ispaymentCompleted,
           amount: paymentIntent.amount / 100,
           credits,
         });
