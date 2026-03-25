@@ -4,9 +4,14 @@ import { removeBackgroundFromImageFile } from "remove.bg";
 
 const removeBgImage = async (req , res) => {
     try{
-        const { clerkId } = req.body;
+        const { userId } = req.auth;
+        console.log("User ID from auth:", userId);
 
-        const user = await User.findOne({ clerkId });
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No image file provided" });
+        }
+
+        const user = await User.findOne({ clerkId: userId });
 
         if (!user){
             return res.status(404).json({ success : false, message: "User not found" });
@@ -14,6 +19,14 @@ const removeBgImage = async (req , res) => {
 
         if(user.credits === 0){
             return res.status(403).json({ success : false, message: "Insufficient credits" });
+        }
+
+        if(!process.env.REMOVE_BG_API_KEY){
+            console.error("REMOVE_BG_API_KEY is not set");
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error(err);
+            });
+            return res.status(500).json({ success: false, message: "Server configuration error" });
         }
 
         const imagepath = req.file.path;
@@ -41,7 +54,12 @@ const removeBgImage = async (req , res) => {
 
     }catch(error){
         console.error("Error removing background:", error);
-        res.status(500).json({ error: "Failed to remove background" });
+        if (req.file) {
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error(err);
+            });
+        }
+        res.status(500).json({ success: false, error: error.message });
     }
 }
 

@@ -94,7 +94,7 @@ const clerkWebhook = async (req, res) => {
 }
 
 const userCredits = async (req,res) => {
-    const userId = req.auth().userId;
+    const { userId } = req.auth;
 
     if(!userId){
         return res.status(401).json({

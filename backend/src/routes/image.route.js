@@ -8,6 +8,6 @@ const router = express.Router();
 router.get("/", (req, res) => {
     res.json({ message: "Welcome to the Image API. Use POST /remove-bg to remove background from an image." });
 });
-router.post("/remove-bg", fileUpload.single("image"), requireAuth(), removeBgImage);
+router.post("/remove-bg", requireAuth(), fileUpload.single("image"), removeBgImage);
 
 export default router;

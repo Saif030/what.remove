@@ -33,7 +33,7 @@ const DataProvider = ({children}) => {
             const formData = new FormData();
             formData.append("image", image);
 
-            const response = await axios.post(import.meta.env.VITE_BACKEND_URL+"/api/v1/remove-bg", formData, {
+            const response = await axios.post("http://localhost:3000/api/v1/image/remove-bg", formData, {
                  headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -42,7 +42,7 @@ const DataProvider = ({children}) => {
             const result = response.data;
             setResultImage(result);
             console.log("Image uploaded successfully:", result);
-            toast.success("image uploaded successfully!");
+            toast.success("Background removed successfully!");
 
         }catch(error){
             console.log(error)
@@ -53,7 +53,7 @@ const DataProvider = ({children}) => {
     const fetchData = async () => {
         try{
             const token = await getToken();
-            const response = await axios.get(import.meta.env.VITE_BACKEND_URL+"/api/v1/users/credits", {
+            const response = await axios.get("http://localhost:3000/api/v1/users/credits", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -68,7 +68,7 @@ const DataProvider = ({children}) => {
     }
 
     return (
-        <DataContext.Provider value={{ data, fetchData , removeBg, image, resultImage }}>
+        <DataContext.Provider value={{ data, fetchData , removeBg, image, resultImage ,resultImage}}>
             {children}
         </DataContext.Provider>
     )
