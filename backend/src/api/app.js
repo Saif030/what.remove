@@ -10,8 +10,9 @@ import { clerkMiddleware } from '@clerk/express'
 const app = express()
 
 // ✅ CORS
+const allowedOrigins = ["http://localhost:5173", "https://what-remove-3wds-liard.vercel.app"];
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: allowedOrigins,
   credentials: true,
 }));
 
