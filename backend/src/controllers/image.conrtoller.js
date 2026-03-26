@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import removeBg from "remove.bg";
+import { removeBackgroundFromImageFile } from "remove.bg";
 
 const removeBgImage = async (req , res) => {
     try{
@@ -21,8 +21,8 @@ const removeBgImage = async (req , res) => {
 
         const { removeBackgroundFromImageBuffer } = removeBg;
         
-        const result = await removeBackgroundFromImageBuffer({
-            imageBuffer: req.file.buffer,
+        const result = await removeBackgroundFromImageFile({
+            imagePath: req.file.path,
             apiKey: process.env.REMOVE_BG_API_KEY,
             size: "auto"
         });
