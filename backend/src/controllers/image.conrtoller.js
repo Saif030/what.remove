@@ -1,4 +1,3 @@
-import fs from "fs";
 import  User from "../models/user.model.js";
 import { removeBackgroundFromImageFile } from "remove.bg";
 
@@ -44,26 +43,17 @@ const removeBgImage = async (req, res) => {
     if (!process.env.REMOVE_BG_API_KEY) {
       console.error("REMOVE_BG_API_KEY is not set");
 
-      if (req.file) {
-        fs.unlink(req.file.path, () => {});
-      }
-
       return res.status(500).json({
         success: false,
         message: "Server configuration error",
       });
     }
 
-    const imagePath = req.file.path;
-
     const result = await removeBackgroundFromImageFile({
-      path: imagePath,
+      imageBuffer: req.file.buffer,  // Use buffer instead of file path
       apiKey: process.env.REMOVE_BG_API_KEY,
       size: "auto",
     });
-
-    // ✅ delete file after processing
-    fs.unlink(imagePath, () => {});
 
     // ✅ update credits
     user.credits -= 1;
@@ -78,10 +68,6 @@ const removeBgImage = async (req, res) => {
 
   } catch (error) {
     console.error("Error removing background:", error);
-
-    if (req.file) {
-      fs.unlink(req.file.path, () => {});
-    }
 
     return res.status(500).json({
       success: false,
