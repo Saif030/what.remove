@@ -38,4 +38,4 @@ app.use("/api/v1/users", userRouter)
 app.use("/api/v1/image", imageRouter)
 app.use("/api/v1/payment", paymentRouter)
 
-export { app }
+export default app; 
