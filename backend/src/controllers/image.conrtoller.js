@@ -1,5 +1,5 @@
 import  User from "../models/user.model.js";
-import { removeBackgroundFromImageFile } from "remove.bg";
+import { removeBackgroundFromImageBase64 } from "remove.bg";
 
 const removeBgImage = async (req, res) => {
   try {
@@ -49,8 +49,10 @@ const removeBgImage = async (req, res) => {
       });
     }
 
-    const result = await removeBackgroundFromImageFile({
-      imageBuffer: req.file.buffer,  // Use buffer instead of file path
+    const base64Image = req.file.buffer.toString('base64');
+
+    const result = await removeBackgroundFromImageBase64({
+      base64img: base64Image,
       apiKey: process.env.REMOVE_BG_API_KEY,
       size: "auto",
     });
