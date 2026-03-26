@@ -30,7 +30,7 @@ const DataProvider = ({children}) => {
             }
 
             const token = await getToken();
-            const response = await axios.post("https://what-remove-3wds-liard.vercel.app/api/v1/payment/payment-intent", {
+            const response = await axios.post("http://localhost:3000/api/v1/payment/payment-intent", {
                 priceId: planId
             }, {
                 headers: {
@@ -64,7 +64,7 @@ const DataProvider = ({children}) => {
             const formData = new FormData();
             formData.append("image", image);
 
-            const response = await axios.post("https://what-remove-3wds-liard.vercel.app/api/v1/image/remove-bg", formData, {
+            const response = await axios.post("http://localhost:3000/api/v1/image/remove-bg", formData, {
                  headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -88,7 +88,7 @@ const DataProvider = ({children}) => {
     const fetchData = async () => {
         try{
             const token = await getToken();
-            const response = await axios.get("https://what-remove-3wds-liard.vercel.app/api/v1/users/credits", {
+            const response = await axios.get("http://localhost:3000/api/v1/users/credits", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
