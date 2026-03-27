@@ -42,6 +42,39 @@ const clerkWebhook = async (req, res) => {
 
         }
 
+        if(type == "session.created"){
+            const isUserexist = await User.findOne({clerkId: data.id});
+
+            if(isUserexist){
+                return res.status(200).json({
+                    success : true,
+                    message : "User already exists"
+                })
+            }
+
+            const { id , email_addresses , image_url , first_name , last_name } = data;
+
+            if (!email_addresses || email_addresses.length === 0) {
+                return res.status(400).json({message: "No email address provided!"});
+            }
+
+            const newUser = await User.create({
+                clerkId: id,
+                email: email_addresses[0].email_address,
+                firstName: first_name,
+                lastName: last_name,
+                photo: image_url
+            })
+
+            if(newUser){
+                return res.status(200).json({
+                    success : true,
+                    message : "User created successfully in database!"
+                })
+            }
+
+        }
+
         if(type === "user.updated"){
             const { id , email_addresses , image_url , first_name , last_name } = data;
 

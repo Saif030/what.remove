@@ -23,11 +23,11 @@ const NavBar = () => {
                 {/* <h1 className="text-xl font-semibold">what.remove</h1> */}
             </Link>
             <div className="flex sm:gap-4 gap-2">
-                <Link to="/plans" className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200">
+                <Link to="/plans" className="flex items-center gap-2 p-1 px-2 sm:px-4 sm:py-2 bg-white rounded-full border border-gray-200">
                     <img src="/credit_icon.png" alt="credit" className="w-5 h-5" />
-                    <div className="flex gap-2 items-center">
-                        <p className="text-sm font-normal hidden sm:block">Credits lefts :</p>
-                        <p className="text-sm">{data ?? 0}</p>
+                    <div className="flex gap-1 items-center">
+                        <p className="sm:text-sm text-xs block">Credits lefts :</p>
+                        <p className="sm:text-sm text-xs">{data ?? 0}</p>
                     </div>
                 </Link>
                 {
@@ -39,7 +39,7 @@ const NavBar = () => {
                     ) : (
                         <div className="flex items-center gap-2 sm:px-4 px-2 sm:py-2 py-1.5 bg-white rounded-full">
                             <UserButton />
-                            <div>
+                            <div className="hidden sm:block">
                                 <p className="sm:text-sm text-xs font-medium">{user?.fullName}</p>
                                 <p className="sm:text-xs text-xs text-gray-500">{user?.emailAddresses[0].emailAddress}</p>
                             </div>

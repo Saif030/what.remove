@@ -37,7 +37,7 @@ const Result = () => {
                 </div>
                 <div className="flex w-full items-center justify-end px-6 flex-row gap-2">
                     <button onClick={() => navigate("/")} className="border sm:text-sm text-xs font-semibold border-blue-500 text-blue-500 px-10 py-3 rounded-full cursor-pointer">Try Another</button>
-                    <button onClick={() => downloadImage(resultImage?.image)} className="bg-gradient-to-r from-blue-600 to-purple-600 inline-flex items-center text-white sm:px-10 px-6 sm:py-3 py-2 rounded-full cursor-pointer">Download</button>
+                    <button onClick={() => downloadImage(resultImage?.image)} className="bg-gradient-to-r from-[#e1a100] to-[#f7c548] inline-flex items-center text-white sm:px-10 px-6 sm:py-3 py-2 rounded-full cursor-pointer">Download</button>
                 </div>
 
             </div>
