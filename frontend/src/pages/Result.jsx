@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
 import { useNavigate } from "react-router-dom";
-
+import loader2 from "../assets/loader2.gif";
 
 const Result = () => {
     const { resultImage } = useContext(DataContext);
@@ -28,11 +27,7 @@ const Result = () => {
                     <div className="sm:w-1/2 w-full h-[60vh] flex flex-col justify-center p-6 gap-4">
                     <h1 className="text-lg text-gray-600 font-semibold">Background Removed</h1>
                     {resultImage ? <img className="w-full h-full object-contain rounded-xl" src={`data:image/png;base64,${resultImage?.image}`} alt="" /> : 
-                  <dotlottie-wc
-  src="https://lottie.host/e2e81ed0-0f0b-4f06-9a2d-a479c8236236/GEk5ZLEQku.lottie"
-  autoplay
-  loop
-></dotlottie-wc>}
+                    <img src={loader2} alt="Loading..." className="w-full h-full object-contain rounded-xl" />}
                     </div>
                 </div>
                 <div className="flex w-full items-center justify-end px-6 flex-row gap-2">

@@ -74,6 +74,7 @@ const DataProvider = ({children}) => {
             if(result.success){
                 setResultImage(result);
                 toast.success("Background removed successfully!");
+                fetchData()
             } else {
                 navigate("/plans");
                 toast.error(result.message);
